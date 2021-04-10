@@ -15,7 +15,6 @@
 
 # Mono auto generated files
 mono_crash.*
-
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -38,6 +37,9 @@ bld/
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/
+
+# Jetbrains Rider cache/options directory
+.idea/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -68,6 +70,7 @@ StyleCopReport.xml
 *_i.c
 *_p.c
 *_h.h
+*_i.h
 *.ilk
 *.meta
 *.obj
@@ -115,7 +118,6 @@ ipch/
 
 # Visual Studio Trace Files
 *.e2e
-
 # TFS 2012 Local Workspace
 $tf/
 
@@ -126,6 +128,9 @@ $tf/
 _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
+
+# JustCode is a .NET coding add-in
+.JustCode
 
 # TeamCity is a build add-in
 _TeamCity*
@@ -140,7 +145,6 @@ _TeamCity*
 # Visual Studio code coverage results
 *.coverage
 *.coveragexml
-
 # NCrunch
 _NCrunch_*
 .*crunch*.local.xml
@@ -203,6 +207,9 @@ csx/
 # Microsoft Azure Emulator
 ecf/
 rcf/
+
+# Microsoft Azure ApplicationInsights config file
+ApplicationInsights.config
 
 # Windows Store app package directories and files
 AppPackages/
@@ -298,7 +305,8 @@ paket-files/
 
 # FAKE - F# Make
 .fake/
-
+/NDependOut
+/TenderManagement.ndproj
 # CodeRush personal settings
 .cr/personal
 

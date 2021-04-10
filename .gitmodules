@@ -1,0 +1,3 @@
+[submodule "src/Imprise.MediatR.Extensions.Caching"]
+	path = src/Imprise.MediatR.Extensions.Caching
+	url = https://github.com/Imprise/Imprise.MediatR.Extensions.Caching.git
