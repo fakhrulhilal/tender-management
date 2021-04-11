@@ -37,8 +37,8 @@ namespace TenderManagement.Application.IntegrationTests.Tender.Command
             Assert.That(result.Name, Is.EqualTo(result.Name));
             Assert.That(result.RefNumber, Is.EqualTo(request.RefNumber));
             Assert.That(result.Details, Is.EqualTo(request.Details));
-            Assert.That(result.ClosingDate, Is.EqualTo(request.ClosingDate.Date));
-            Assert.That(result.ReleaseDate, Is.EqualTo(request.ReleaseDate.Date));
+            Assert.That(result.ClosingDate, Is.EqualTo(request.ClosingDate));
+            Assert.That(result.ReleaseDate, Is.EqualTo(request.ReleaseDate));
         }
 
         [Test]
