@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,9 +16,10 @@ namespace TenderManagement.Application.Tender.Command
             public int CreatedId { get; init; }
         }
 
-        public class Validator : AbstractValidator<CreateTenderCommand>
+        public class Validator : BaseValidator<CreateTenderCommand>
         {
-            public Validator(IDateTime clock) => Include(new BaseValidator(clock));
+            public Validator(IDateTime clock) : base(clock) 
+            { }
         }
 
         public class Handler : IRequestHandler<CreateTenderCommand, Response>
@@ -39,7 +39,7 @@ namespace TenderManagement.Application.Tender.Command
                 tender.DomainEvents.Add(new TenderCreatedEvent(tender));
                 _dbContext.Tenders.Add(tender);
                 await _dbContext.SaveChangesAsync(cancellationToken);
-                return new Response {CreatedId = tender.Id};
+                return new Response { CreatedId = tender.Id };
             }
         }
     }

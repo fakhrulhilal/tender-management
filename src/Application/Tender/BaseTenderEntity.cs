@@ -12,9 +12,9 @@ namespace TenderManagement.Application.Tender
         public DateTime ReleaseDate { get; set; }
         public DateTime ClosingDate { get; set; }
 
-        public class BaseValidator : AbstractValidator<BaseTenderEntity>
+        public abstract class BaseValidator<TTender> : AbstractValidator<TTender> where TTender : BaseTenderEntity
         {
-            public BaseValidator(IDateTime clock)
+            protected BaseValidator(IDateTime clock)
             {
                 RuleFor(p => p.Name).NotNull().NotEmpty().MaximumLength(100);
                 RuleFor(p => p.RefNumber).NotNull().NotEmpty().MaximumLength(50).WithName("Reference Number");

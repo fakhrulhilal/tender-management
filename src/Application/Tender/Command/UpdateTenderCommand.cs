@@ -16,11 +16,11 @@ namespace TenderManagement.Application.Tender.Command
     {
         public int Id { get; init; }
 
-        public class Validator : AbstractValidator<UpdateTenderCommand>
+        public class Validator : BaseValidator<UpdateTenderCommand>
         {
             private readonly IApplicationDbContext _dbContext;
 
-            public Validator(IApplicationDbContext dbContext)
+            public Validator(IApplicationDbContext dbContext, IDateTime clock) : base(clock)
             {
                 _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
                 RuleFor(p => p.Id).GreaterThan(0).MustAsync(Exists).WithMessage((_, id) => $"No Tender with ID {id}");
