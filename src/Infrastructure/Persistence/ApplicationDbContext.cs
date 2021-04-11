@@ -73,9 +73,10 @@ namespace TenderManagement.Infrastructure.Persistence
         {
             while (true)
             {
-                var domainEventEntity = ChangeTracker.Entries<IHasDomainEvent>()
+                var allDomainEvents = ChangeTracker.Entries<IHasDomainEvent>()
                     .Select(x => x.Entity.DomainEvents)
-                    .SelectMany(x => x)
+                    .SelectMany(x => x);
+                var domainEventEntity = allDomainEvents
                     .Where(domainEvent => !domainEvent.IsPublished)
                     .FirstOrDefault();
                 if (domainEventEntity == null) break;

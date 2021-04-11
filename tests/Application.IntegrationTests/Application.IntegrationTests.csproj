@@ -31,11 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Database\Database.csproj" />
     <ProjectReference Include="..\..\src\WebUI\WebUI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tender\Command\" />
+    <Folder Include="Tender\TestBuilder\" />
   </ItemGroup>
 
 </Project>

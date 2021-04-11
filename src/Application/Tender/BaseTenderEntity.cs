@@ -17,10 +17,13 @@ namespace TenderManagement.Application.Tender
             public BaseValidator(IDateTime clock)
             {
                 RuleFor(p => p.Name).NotNull().NotEmpty().MaximumLength(100);
-                RuleFor(p => p.RefNumber).NotNull().NotEmpty().MaximumLength(50);
+                RuleFor(p => p.RefNumber).NotNull().NotEmpty().MaximumLength(50).WithName("Reference Number");
                 RuleFor(p => p.Details).NotNull().NotEmpty().MaximumLength(500);
-                RuleFor(p => p.ReleaseDate).GreaterThan(clock.Now);
-                RuleFor(p => p.ClosingDate).GreaterThan(clock.Now).GreaterThan(p => p.ReleaseDate.Date);
+                RuleFor(p => p.ReleaseDate).GreaterThanOrEqualTo(clock.Now.Date.AddDays(1))
+                    .WithMessage("Release date must be in the future.");
+                RuleFor(p => p.ClosingDate)
+                    .GreaterThanOrEqualTo(clock.Now.Date.AddDays(1)).WithMessage("Closing date must be in the future.")
+                    .GreaterThanOrEqualTo(p => p.ReleaseDate.Date.AddDays(1)).WithMessage("Closing date must be later than release date.");
             }
         }
     }

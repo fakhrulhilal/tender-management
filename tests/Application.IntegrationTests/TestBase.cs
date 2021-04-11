@@ -5,12 +5,9 @@ namespace TenderManagement.Application.IntegrationTests
 {
     using static Testing;
 
-    public class TestBase
+    public abstract class TestBase
     {
         [SetUp]
-        public async Task TestSetUp()
-        {
-            await ResetState();
-        }
+        public async Task TestSetUp() => await ResetState();
     }
 }

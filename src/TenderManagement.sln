@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Imprise.MediatR.Extensions.Caching", "Imprise.MediatR.Extensions.Caching\src\Imprise.MediatR.Extensions.Caching\Imprise.MediatR.Extensions.Caching.csproj", "{F04CDD17-D07A-473D-BCBB-BB477AE55EAF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{9FFD5473-9E26-4288-8042-33BDF8E464BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{F04CDD17-D07A-473D-BCBB-BB477AE55EAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F04CDD17-D07A-473D-BCBB-BB477AE55EAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F04CDD17-D07A-473D-BCBB-BB477AE55EAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FFD5473-9E26-4288-8042-33BDF8E464BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FFD5473-9E26-4288-8042-33BDF8E464BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FFD5473-9E26-4288-8042-33BDF8E464BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FFD5473-9E26-4288-8042-33BDF8E464BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

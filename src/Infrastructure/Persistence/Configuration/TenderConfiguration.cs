@@ -8,8 +8,9 @@ namespace TenderManagement.Infrastructure.Persistence.Configuration
     {
         public void Configure(EntityTypeBuilder<Tender> builder)
         {
+            builder.ToTable("Tender");
             builder.Property(p => p.Name).IsRequired().HasMaxLength(100);
-            builder.Property(p => p.RefNumber).IsRequired().HasMaxLength(50);
+            builder.Property(p => p.RefNumber).IsRequired().HasMaxLength(50).HasColumnName("ReferenceNumber");
             builder.Property(p => p.Details).IsRequired();
             builder.Property(p => p.CreatedBy).IsRequired().HasMaxLength(50);
             builder.HasQueryFilter(p => !p.IsDeleted);

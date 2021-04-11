@@ -12,6 +12,11 @@ namespace TenderManagement.Application.Tender.Command
 {
     public class CreateTenderCommand : BaseTenderEntity, IRequest<CreateTenderCommand.Response>, IMapDef<Domain.Entity.Tender>
     {
+        public void Mapping(Profile profile) => 
+            profile.CreateMap<CreateTenderCommand, Domain.Entity.Tender>()
+                .ForMember(dst => dst.ClosingDate, opt => opt.MapFrom(src => src.ClosingDate.Date))
+                .ForMember(dst => dst.ReleaseDate, opt => opt.MapFrom(src => src.ReleaseDate.Date));
+
         public class Response
         {
             public int CreatedId { get; init; }
