@@ -14,9 +14,7 @@ namespace TenderManagement.Application.Tender.Query
 {
     public class GetTenderDetailQuery : IRequest<GetTenderDetailQuery.Response>
     {
-        public GetTenderDetailQuery(int id) => Id = id;
-
-        public int Id { get; }
+        public int Id { get; init; }
 
         public class Response : BaseTenderEntity, IMapDef<Domain.Entity.Tender>
         {

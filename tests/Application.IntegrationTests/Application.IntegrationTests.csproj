@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Database\Database.csproj" />
-    <ProjectReference Include="..\..\src\WebUI\WebUI.csproj" />
+    <ProjectReference Include="..\..\src\WebUI\WebApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>

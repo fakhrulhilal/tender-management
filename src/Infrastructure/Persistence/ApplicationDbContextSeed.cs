@@ -32,7 +32,7 @@ namespace TenderManagement.Infrastructure.Persistence
             if (!context.Tenders.Any())
             {
                 //TODO: populate initial data
-                await context.SaveChangesAsync(cancellationToken);
+                //await context.SaveChangesAsync(cancellationToken);
             }
         }
     }

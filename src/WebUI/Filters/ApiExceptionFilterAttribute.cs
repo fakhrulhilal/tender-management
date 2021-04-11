@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
 using TenderManagement.Application.Common.Exception;
 
-namespace TenderManagement.WebUI.Filters
+namespace TenderManagement.WebApi.Filters
 {
     public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {

@@ -12,9 +12,7 @@ namespace TenderManagement.Application.Tender.Command
 {
     public class DeleteTenderCommand : IRequest
     {
-        public DeleteTenderCommand(int id) => Id = id;
-
-        public int Id { get; }
+        public int Id { get; init; }
 
         public class Validator : AbstractValidator<DeleteTenderCommand>
         {

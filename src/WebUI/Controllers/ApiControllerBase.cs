@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace TenderManagement.WebUI.Controllers
+namespace TenderManagement.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

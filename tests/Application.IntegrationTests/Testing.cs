@@ -17,7 +17,7 @@ using TenderManagement.Application.Common.Port;
 using TenderManagement.Domain.Common;
 using TenderManagement.Infrastructure.Identity;
 using TenderManagement.Infrastructure.Persistence;
-using TenderManagement.WebUI;
+using TenderManagement.WebApi;
 
 namespace TenderManagement.Application.IntegrationTests
 {
@@ -47,7 +47,7 @@ namespace TenderManagement.Application.IntegrationTests
 
             ServiceCollection.AddSingleton(Mock.Of<IWebHostEnvironment>(w =>
                 w.EnvironmentName == "Development" &&
-                w.ApplicationName == "TenderManagement.WebUI"));
+                w.ApplicationName == "TenderManagement.WebApi"));
 
             ServiceCollection.AddLogging();
 

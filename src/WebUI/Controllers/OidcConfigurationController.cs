@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace TenderManagement.WebUI.Controllers
+namespace TenderManagement.WebApi.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     public class OidcConfigurationController : Controller

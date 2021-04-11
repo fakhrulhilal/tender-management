@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,15 +8,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NSwag;
 using NSwag.Generation.Processors.Security;
-using System.Linq;
 using TenderManagement.Application;
 using TenderManagement.Application.Common.Port;
 using TenderManagement.Infrastructure;
 using TenderManagement.Infrastructure.Persistence;
-using TenderManagement.WebUI.Filters;
-using TenderManagement.WebUI.Services;
+using TenderManagement.WebApi.Filters;
+using TenderManagement.WebApi.Services;
 
-namespace TenderManagement.WebUI
+namespace TenderManagement.WebApi
 {
     public class Startup
     {

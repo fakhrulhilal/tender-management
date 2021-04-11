@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>TenderManagement.WebUI</RootNamespace>
-    <AssemblyName>TenderManagement.WebUI</AssemblyName>
+    <RootNamespace>TenderManagement.WebApi</RootNamespace>
+    <AssemblyName>TenderManagement.WebApi</AssemblyName>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>true</IsPackable>

@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using TenderManagement.Application.Common.Port;
 
-namespace TenderManagement.WebUI.Services
+namespace TenderManagement.WebApi.Services
 {
     public class CurrentUserService : ICurrentUserService
     {

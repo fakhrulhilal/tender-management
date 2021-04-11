@@ -5,6 +5,9 @@
     /// </summary>
     public class NotFoundException : BusinessApplicationException
     {
+        public NotFoundException()
+        { }
+
         public NotFoundException(string message)
             : base(message)
         { }

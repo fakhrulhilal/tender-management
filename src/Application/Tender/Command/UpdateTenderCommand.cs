@@ -14,7 +14,7 @@ namespace TenderManagement.Application.Tender.Command
 {
     public class UpdateTenderCommand : BaseTenderEntity, IRequest, IMapDef<Domain.Entity.Tender>
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         public class Validator : AbstractValidator<UpdateTenderCommand>
         {

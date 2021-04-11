@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using TenderManagement.Application.Common.Model;
 using TenderManagement.Application.Tender.Command;
 using TenderManagement.Application.Tender.Query;
 
-namespace TenderManagement.WebUI.Controllers
+namespace TenderManagement.WebApi.Controllers
 {
     [Authorize]
     public class TenderController : ApiControllerBase
@@ -16,7 +16,7 @@ namespace TenderManagement.WebUI.Controllers
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<GetTenderDetailQuery.Response>> GetDetail(int id) =>
-            await Mediator.Send(new GetTenderDetailQuery(id));
+            await Mediator.Send(new GetTenderDetailQuery {Id = id});
 
         [HttpPost]
         public async Task<ActionResult<CreateTenderCommand.Response>> Create(CreateTenderCommand command) =>
@@ -38,7 +38,7 @@ namespace TenderManagement.WebUI.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await Mediator.Send(new DeleteTenderCommand(id));
+            await Mediator.Send(new DeleteTenderCommand {Id = id});
             return NoContent();
         }
     }

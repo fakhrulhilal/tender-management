@@ -27,6 +27,15 @@ namespace TenderManagement.Infrastructure
                         b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             }
 
+            var cacheConfig = configuration.GetSection(CacheConfig.Key).Get<CacheConfig>();
+            if (cacheConfig.UseRedis)
+            {
+                services.AddStackExchangeRedisCache(options => options.Configuration = cacheConfig.RedisConnection);
+            }
+            else
+            {
+                services.AddDistributedMemoryCache();
+            }
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.AddScoped<IDomainEventService, DomainEventService>();
