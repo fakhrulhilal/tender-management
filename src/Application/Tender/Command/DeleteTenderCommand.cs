@@ -21,7 +21,7 @@ namespace TenderManagement.Application.Tender.Command
             public Validator(IApplicationDbContext dbContext)
             {
                 _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-                RuleFor(p => p.Id).GreaterThan(0).MustAsync(Exists).WithMessage((_, id) => $"No tender with ID {id}");
+                RuleFor(p => p.Id).GreaterThan(0).MustAsync(Exists).WithMessage((_, id) => $"No Tender with ID {id}");
             }
 
             private async Task<bool> Exists(int id, CancellationToken cancellationToken) =>

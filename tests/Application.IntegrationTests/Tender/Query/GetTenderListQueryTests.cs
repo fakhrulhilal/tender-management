@@ -1,6 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TenderManagement.Application.Tender.Query;
@@ -84,28 +82,6 @@ namespace TenderManagement.Application.IntegrationTests.Tender.Query
             Assert.That(result.PageIndex, Is.EqualTo(requestedPage));
             Assert.That(result.HasNextPage, Is.False);
             Assert.That(result.HasPreviousPage, Is.True);
-        }
-
-        private async Task<List<Domain.Entity.Tender>> GenerateSampleData(int total)
-        {
-            var tomorrow = DateTime.Now.AddDays(1);
-            var dayAfterTomorrow = DateTime.Now.AddDays(2);
-            var data = new List<Domain.Entity.Tender>();
-            for (int i = 1; i <= total; i++)
-            {
-                data.Add(new Domain.Entity.Tender
-                {
-                    Id = i,
-                    RefNumber = $"ref {i}",
-                    Name = $"name {i}",
-                    Details = $"details {i}",
-                    ReleaseDate = tomorrow,
-                    ClosingDate = dayAfterTomorrow
-                });
-            }
-
-            await AddAsync(true, data.ToArray());
-            return data;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace TenderManagement.Application.Tender.Query
 
             public void Mapping(Profile profile)
             {
-                profile.CreateMap<Domain.Entity.Tender, Response>()
+                profile.CreateMap<Domain.Entity.Tender, Response>(MemberList.Destination)
                     .ForMember(dst => dst.CreatorId, opt => opt.MapFrom(src => src.CreatedBy));
             }
         }

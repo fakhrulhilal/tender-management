@@ -14,7 +14,7 @@ namespace TenderManagement.Application.Tender.Command
 {
     public class UpdateTenderCommand : BaseTenderEntity, IRequest, IMapDef<Domain.Entity.Tender>
     {
-        public int Id { get; init; }
+        public int Id { get; set; }
 
         public class Validator : BaseValidator<UpdateTenderCommand>
         {
@@ -26,9 +26,8 @@ namespace TenderManagement.Application.Tender.Command
                 RuleFor(p => p.Id).GreaterThan(0).MustAsync(Exists).WithMessage((_, id) => $"No Tender with ID {id}");
             }
 
-            private async Task<bool>
-                Exists(UpdateTenderCommand command, int arg2, CancellationToken cancellationToken) =>
-                await _dbContext.Tenders.AsNoTracking().AnyAsync(t => t.Id == command.Id, cancellationToken);
+            private async Task<bool> Exists(int id, CancellationToken cancellationToken) =>
+                await _dbContext.Tenders.AsNoTracking().AnyAsync(t => t.Id == id, cancellationToken);
         }
 
         public class Handler : IRequestHandler<UpdateTenderCommand>

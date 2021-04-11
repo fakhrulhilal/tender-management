@@ -8,9 +8,11 @@ using Moq;
 using NUnit.Framework;
 using Respawn;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TenderManagement.Application.Common.Port;
@@ -67,7 +69,7 @@ namespace TenderManagement.Application.IntegrationTests
             ServiceCollection.RemoveAll(typeof(IDateTime));
             var dateTimeMock = new Mock<IDateTime>();
             CurrentDateTime = DateTime.Now;
-            dateTimeMock.Setup(p => p.Now).Returns(CurrentDateTime);
+            dateTimeMock.Setup(p => p.Now).Returns(() => CurrentDateTime);
             ServiceCollection.AddSingleton(dateTimeMock.Object);
 
             _scopeFactory = ServiceCollection.BuildServiceProvider().GetService<IServiceScopeFactory>();
@@ -94,8 +96,6 @@ namespace TenderManagement.Application.IntegrationTests
             var mediator = scope.ServiceProvider.GetRequiredService<ISender>();
             return await mediator.Send(request);
         }
-
-        public static void ConfigureNow(DateTime now) => CurrentDateTime = now;
 
         public static async Task<string> RunAsDefaultUserAsync()
         {
@@ -148,6 +148,14 @@ namespace TenderManagement.Application.IntegrationTests
             return await context.FindAsync<TEntity>(keyValues);
         }
 
+        public static async Task<TEntity> FindWithoutFilterAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
+            where TEntity : class
+        {
+            using var scope = _scopeFactory.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            return await context.Set<TEntity>().IgnoreQueryFilters().FirstOrDefaultAsync(predicate);
+        }
+
         public static async Task AddAsync<TEntity>(bool enableIdentityInsert, params TEntity[] entities)
             where TEntity : class
         {
@@ -157,7 +165,7 @@ namespace TenderManagement.Application.IntegrationTests
             {
                 if (entity is AuditableEntity auditableEntity)
                 {
-                    if (auditableEntity.Created == default) auditableEntity.Created = DateTime.Now;
+                    if (auditableEntity.Created == default) auditableEntity.Created = CurrentDateTime;
                     if (string.IsNullOrEmpty(auditableEntity.CreatedBy)) auditableEntity.CreatedBy = typeof(Testing).FullName;
                 }
 
@@ -177,6 +185,28 @@ namespace TenderManagement.Application.IntegrationTests
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             return await context.Set<TEntity>().CountAsync();
+        }
+
+        internal static async Task<List<Domain.Entity.Tender>> GenerateSampleData(int total)
+        {
+            var tomorrow = DateTime.Now.AddDays(1);
+            var dayAfterTomorrow = DateTime.Now.AddDays(2);
+            var data = new List<Domain.Entity.Tender>();
+            for (int i = 1; i <= total; i++)
+            {
+                data.Add(new Domain.Entity.Tender
+                {
+                    Id = i,
+                    RefNumber = $"ref {i}",
+                    Name = $"name {i}",
+                    Details = $"details {i}",
+                    ReleaseDate = tomorrow,
+                    ClosingDate = dayAfterTomorrow
+                });
+            }
+
+            await AddAsync(true, data.ToArray());
+            return data;
         }
 
         [OneTimeTearDown]

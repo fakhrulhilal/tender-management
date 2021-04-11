@@ -35,8 +35,4 @@
     <ProjectReference Include="..\..\src\WebUI\WebApi.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Tender\TestBuilder\" />
-  </ItemGroup>
-
 </Project>

@@ -32,8 +32,8 @@ namespace TenderManagement.Application.UnitTests.Common.Mappings
         [Test]
         [TestCase(typeof(CreateTenderCommand), typeof(Domain.Entity.Tender))]
         [TestCase(typeof(UpdateTenderCommand), typeof(Domain.Entity.Tender))]
-        [TestCase(typeof(Domain.Entity.Tender), typeof(GetTenderDetailQuery))]
-        [TestCase(typeof(Domain.Entity.Tender), typeof(GetTenderListQuery))]
+        [TestCase(typeof(Domain.Entity.Tender), typeof(GetTenderDetailQuery.Response))]
+        [TestCase(typeof(Domain.Entity.Tender), typeof(GetTenderListQuery.Response))]
         public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
         {
             var instance = GetInstanceOf(source);
@@ -61,8 +61,8 @@ namespace TenderManagement.Application.UnitTests.Common.Mappings
 
             Assert.That(entity.CreatedBy, Is.EqualTo(originalCreator));
             Assert.That(entity.Created, Is.EqualTo(createdDate));
-            Assert.That(entity.Id, Is.EqualTo(1));
-            Assert.That(entity.Name, Is.EqualTo("coba"));
+            Assert.That(entity.Id, Is.EqualTo(command.Id));
+            Assert.That(entity.Name, Is.EqualTo(command.Name));
         }
 
         private object GetInstanceOf(Type type)
