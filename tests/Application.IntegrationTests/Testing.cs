@@ -16,10 +16,11 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using TenderManagement.Application.Common.Port;
+using TenderManagement.Database;
 using TenderManagement.Domain.Common;
 using TenderManagement.Infrastructure.Identity;
 using TenderManagement.Infrastructure.Persistence;
-using TenderManagement.WebApi;
+using Startup = TenderManagement.WebApi.Startup;
 
 namespace TenderManagement.Application.IntegrationTests
 {
@@ -87,7 +88,7 @@ namespace TenderManagement.Application.IntegrationTests
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             context.Database.Migrate();
-            Database.Startup.Main(new[] { context.Database.GetConnectionString() });
+            Database.Startup.MigrateDatabase(context.Database.GetConnectionString(), new DebugTraceService());
         }
 
         public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)

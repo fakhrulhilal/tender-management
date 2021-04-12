@@ -4,17 +4,19 @@ using Yuniql.Core;
 
 namespace TenderManagement.Database
 {
-    public static class Startup
+    public class Startup
     {
-        public static void Main(string[] args)
+        public static void Main(string[] args) => MigrateDatabase(args[0], new ConsoleTraceService());
+
+        public static void MigrateDatabase(string connectionString, Yuniql.Extensibility.ITraceService traceService)
         {
             var configuration = Configuration.Instance;
             configuration.Platform = "sqlserver";
             configuration.Workspace = GetDatabaseProjectDirectory(System.Environment.CurrentDirectory);
-            configuration.ConnectionString = args[0];
+            configuration.ConnectionString = connectionString;
             configuration.IsAutoCreateDatabase = true;
 
-            var migrationServiceFactory = new MigrationServiceFactory(new DefaultTraceService());
+            var migrationServiceFactory = new MigrationServiceFactory(traceService);
             var migrationService = migrationServiceFactory.Create();
             migrationService.Run();
         }

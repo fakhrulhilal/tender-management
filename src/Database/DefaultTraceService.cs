@@ -1,13 +1,9 @@
 ﻿namespace TenderManagement.Database
 {
-    public class DefaultTraceService : Yuniql.Extensibility.ITraceService
+    public abstract class DefaultTraceService : Yuniql.Extensibility.ITraceService
     {
-#if DEBUG
-        private void Log(string prefix, string message) => System.Diagnostics.Debug.WriteLine($"{prefix}: {message}");
+        protected abstract void Log(string prefix, string message);
         
-#else
-        private void Log(string prefix, string message) => System.Console.WriteLine($"{prefix}: {message}");
-#endif
         public void Debug(string message, object payload = null) => Log("debug", message);
         public void Info(string message, object payload = null) => Log("INFO", message);
         public void Warn(string message, object payload = null) => Log("warn", message);
