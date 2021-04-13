@@ -3,7 +3,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 80/tcp
-EXPOSE 443/tcp
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /tests
@@ -45,6 +44,6 @@ WORKDIR /app
 COPY --from=publish /app/publish web
 COPY --from=db /app/db migration
 WORKDIR /app/web
-ENV ASPNETCORE_URLS http://*:80,https://*:443
+ENV ASPNETCORE_URLS="http://+:80"
 HEALTHCHECK --interval=30s --timeout=3s --retries=1 CMD curl --silent --fail http://localhost:80/health || exit 1
 ENTRYPOINT ["dotnet", "TenderManagement.WebApi.dll", "--dbpath", "/app/migration"]

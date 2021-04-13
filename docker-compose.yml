@@ -36,8 +36,7 @@ services:
     container_name: "tendermanagement-api"
     restart: on-failure
     ports:
-    - 80
-    - 443
+    - 8000:80
     depends_on:
     - db
     - cache
