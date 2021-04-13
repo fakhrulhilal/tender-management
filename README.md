@@ -7,6 +7,7 @@ All of this example command below assuming we use powershell as shell.
 1. dotnet SDK v5
 2. [yuniql](https://yuniql.io/docs/install-yuniql/)
 3. [Docker Desktop](https://www.docker.com/products/docker-desktop) for getting all required services
+4. Redis for distributed cache
 
 ## Running from source code
 
@@ -31,6 +32,18 @@ After that, configure the appsettings.json for this key:
 }
 ```
 
+## Running inside docker container
+
+Open your console and change directory to the git repo, and run `docker compose up`. 
+When running inside docker container, it will use _Container_ as environment mode, be sure to use this appsetting.json for all projects.
+It publish 2 things in the container image:
+1. The web API it self under /app/web directory
+2. The db migration script (along with executable binary) under /app/migration
+
+By default, web API will do migration using EF core and yuniql. 
+However, yuniql need to specify path to migration script or using current directory as workspace.
+At starting up web API, we can specify migration folder by passing parameter `--dbpath /app/migration`.
+
 ## Using redis as distriuted cache
 
 Get redis server using docker by using this command: `docker run --name redis-cache -p 6379:6379 -d redis`. And then configure the appsettings.json for this key:
@@ -42,3 +55,4 @@ Get redis server using docker by using this command: `docker run --name redis-ca
   }
 }
 ```
+
