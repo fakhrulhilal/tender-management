@@ -1,0 +1,50 @@
+version: "3.9"
+services:
+  db:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    container_name: "sqlserver"
+    expose:
+    - 1433
+    environment:
+      SA_PASSWORD: "P@ssw0rd"
+      ACCEPT_EULA: "Y"
+    volumes:
+    - sqlvolume:/var/opt/mssql
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$$SA_PASSWORD" -Q "SELECT 1" -b || exit 1
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  cache:
+    image: "redis"
+    container_name: "rediscache"
+    expose:
+    - 6379
+
+  logserver:
+    image: datalust/seq:latest
+    container_name: serilogserver
+    ports:
+      - "5341:80"
+    environment:
+      - ACCEPT_EULA=Y 
+  
+  webapi:
+    build: "."
+    container_name: "tendermanagement-api"
+    restart: on-failure
+    ports:
+    - 80
+    - 443
+    depends_on:
+    - db
+    - cache
+    - logserver
+    environment:
+      DOTNET_ENVIRONMENT: "Container"
+
+volumes:
+  sqlvolume:
+    external: true

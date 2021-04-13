@@ -10,6 +10,8 @@
     <!--<IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>-->
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
+    <UserSecretsId>6a89c55d-68cb-4f22-8106-c58d3ef3a028</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +22,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
     <PackageReference Include="NSwag.AspNetCore" Version="13.10.9" />
     <PackageReference Include="NSwag.MSBuild" Version="13.10.9">
       <PrivateAssets>all</PrivateAssets>

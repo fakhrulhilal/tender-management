@@ -88,7 +88,7 @@ namespace TenderManagement.Application.IntegrationTests
             using var scope = _scopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             context.Database.Migrate();
-            Database.Startup.MigrateDatabase(context.Database.GetConnectionString(), new DebugTraceService());
+            Migration.Start(context.Database.GetConnectionString(), new DebugTraceService());
         }
 
         public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)

@@ -1,13 +1,46 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>TenderManagement.Database</AssemblyName>
     <RootNamespace>TenderManagement.Database</RootNamespace>
     <OutputType>Exe</OutputType>
+    <UserSecretsId>f717efc5-b7fa-49b4-b5f6-ffe1a2116e46</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+      <None Remove="_draft\README.md" />
+      <None Remove="_erase\README.md" />
+      <None Remove="_init\README.md" />
+      <None Remove="_post\README.md" />
+      <None Remove="_pre\README.md" />
+      <None Remove="v0.00\01-setup-tables.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="v0.00\01-setup-tables.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="_draft\README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="_erase\README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="_init\README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="_post\README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="_pre\README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Yuniql.Core" Version="1.1.55" />
   </ItemGroup>
 
