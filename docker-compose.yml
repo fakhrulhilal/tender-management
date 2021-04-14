@@ -17,20 +17,44 @@ services:
       retries: 10
       start_period: 10s
 
+  search:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
+    container_name: elasticsearch
+    restart: on-failure
+    environment:
+      - node.name=elasticsearch
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    healthcheck:
+      test: curl -s http://localhost:9200 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    expose:
+    - 9200
+
+  logserver:
+    image: docker.elastic.co/kibana/kibana:7.12.0
+    container_name: kibana
+    depends_on:
+    - elasticsearch
+    ports:
+    - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+
   cache:
     image: "redis"
     container_name: "rediscache"
     expose:
     - 6379
 
-  logserver:
-    image: datalust/seq:latest
-    container_name: serilogserver
-    ports:
-      - "5341:80"
-    environment:
-      - ACCEPT_EULA=Y 
-  
   webapi:
     build: "."
     container_name: "tendermanagement-api"

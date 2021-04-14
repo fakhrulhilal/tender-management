@@ -6,7 +6,7 @@ All of this example command below assuming we use powershell as shell.
 ## Requirements
 1. dotnet SDK v5
 2. [yuniql](https://yuniql.io/docs/install-yuniql/)
-3. [Docker Desktop](https://www.docker.com/products/docker-desktop) for getting all required services
+3. [Docker Desktop](https://www.docker.com/products/docker-desktop) for getting all required services with WSL2 backend (for windows users)
 4. Redis for distributed cache
 
 ## Running from source code
@@ -34,6 +34,7 @@ After that, configure the appsettings.json for this key:
 
 ## Running inside docker container
 
+For windows user, I recommend to use docker desktop and use WSL2 backend. And this guide will use this as requirement.
 Open your console and change directory to the git repo, and run `docker compose up`. 
 When running inside docker container, it will use _Container_ as environment mode, be sure to use this appsetting.json for all projects.
 It publish 2 things in the container image:
@@ -55,4 +56,11 @@ Get redis server using docker by using this command: `docker run --name redis-ca
   }
 }
 ```
+
+## Using kibana as logging monitor
+
+The logging is handled by serilog. And serilog will push the log into elastic search. 
+And we will use kibana as logging dashboard that collect data from elastic search. Be sure to set [vm_max_map_count](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_set_vm_max_map_count_to_at_least_262144) or elastic search will fail to run. This is required before running `docker compose`.
+Use [docker](#running-inside-docker-container) to get started. Open the kibana dashboard at [port 5601](http://localhost:5601), click discover menu \ Manage spaces. Under left menu, click Kibana \ Index Patterns. As you can see below, there will be tendermanagementapi-logs-xx as the default. And next, use _@timestamp_ as Time field. The term _tendermanagementapi_ can be configure in appsettings.json under name _AppLog:Name_. It uses this format: `[AppLog:Name]-logs-[env name]-[monthly date]`. The detail implementation can be found in [`src/Infrastructure/DependencyInjection.UseInfrastructure(IHostBuilder)`](src/Infrastructure/DependencyInjection). And last, under discover menu, heads up to Analytics \ Discover.
+
 

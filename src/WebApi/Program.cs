@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using TenderManagement.Infrastructure;
 using TenderManagement.Infrastructure.Identity;
 using TenderManagement.Infrastructure.Persistence;
 using TenderManagement.WebApi.Services;
@@ -60,6 +61,7 @@ namespace TenderManagement.WebApi
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseInfrastructure()
                 .ConfigureWebHostDefaults(builder =>
                 {
                     builder.UseStartup<Startup>();
