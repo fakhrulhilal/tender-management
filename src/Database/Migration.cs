@@ -51,7 +51,8 @@ namespace TenderManagement.Database
         public Task StartAsync(CancellationToken cancellationToken)
         {
             string dbConnectionString = _configuration.GetDatabaseConnection();
-            Start(dbConnectionString, _traceService);
+            string dbPath = _configuration.GetValue<string>("dbpath");
+            Start(dbConnectionString, _traceService, dbPath);
             return Task.CompletedTask;
         }
 

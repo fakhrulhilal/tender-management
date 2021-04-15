@@ -4,13 +4,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
+using System;
+using System.Linq;
 using System.Reflection;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 using TenderManagement.Application.Common.Port;
 using TenderManagement.Infrastructure.Identity;
 using TenderManagement.Infrastructure.Persistence;
+using TenderManagement.Infrastructure.Persistence.Migration;
 using TenderManagement.Infrastructure.Service;
 
 namespace TenderManagement.Infrastructure
@@ -19,18 +23,14 @@ namespace TenderManagement.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var migrationsAssembly = typeof(ApplicationDbContext).Assembly.FullName;
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))
-            {
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseInMemoryDatabase("TenderManagementDb"));
-            }
+                services.AddDbContext<ApplicationDbContext>(
+                    options => options.UseInMemoryDatabase("TenderManagementDb"));
             else
-            {
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection"),
-                        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-            }
+                    options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationsAssembly)));
 
             var cacheConfig = configuration.GetSection(CacheConfig.Key).Get<CacheConfig>();
             if (cacheConfig.UseRedis)
@@ -51,8 +51,12 @@ namespace TenderManagement.Infrastructure
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+                {
+                    options.Clients.AddRange(Config.GetClients().ToArray());
+                    options.ApiResources.AddRange(Config.GetApiResources().ToArray());
+                    options.ApiScopes.AddRange(Config.GetApiScopes().ToArray());
+                });
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<IIdentityService, IdentityService>();
 
@@ -73,8 +77,8 @@ namespace TenderManagement.Infrastructure
             host.UseSerilog((context, logConfig) =>
             {
                 var config = context.Configuration;
-                var esUri = new System.Uri(config.GetValue<string>("AppLog:ESUri"));
-                string appName = config.GetValue<string>("AppLog:Name") ?? Assembly.GetCallingAssembly().FullName ?? Assembly.GetExecutingAssembly().FullName; 
+                var esUri = new Uri(config.GetValue<string>("AppLog:ESUri"));
+                string appName = config.GetValue<string>("AppLog:Name") ?? Assembly.GetCallingAssembly().FullName ?? Assembly.GetExecutingAssembly().FullName;
                 string envName = context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "_");
                 logConfig
                     .Enrich.FromLogContext()
@@ -83,7 +87,7 @@ namespace TenderManagement.Infrastructure
                     .ReadFrom.Configuration(context.Configuration)
                     .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(esUri)
                     {
-                        IndexFormat = $"{appName}-logs-{envName}-{System.DateTime.UtcNow:yyyy-MM}",
+                        IndexFormat = $"{appName}-logs-{envName}-{DateTime.UtcNow:yyyy-MM}",
                         AutoRegisterTemplate = true
                     });
             });

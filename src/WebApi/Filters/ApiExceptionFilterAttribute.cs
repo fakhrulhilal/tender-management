@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using TenderManagement.Application.Common.Exception;
 
 namespace TenderManagement.WebApi.Filters
@@ -11,9 +12,11 @@ namespace TenderManagement.WebApi.Filters
     {
 
         private readonly IDictionary<Type, Action<ExceptionContext>> _exceptionHandlers;
+        private readonly ILogger<ApiExceptionFilterAttribute> _logger;
 
-        public ApiExceptionFilterAttribute()
+        public ApiExceptionFilterAttribute(ILogger<ApiExceptionFilterAttribute> logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             // Register known exception types and handlers.
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
@@ -50,7 +53,7 @@ namespace TenderManagement.WebApi.Filters
 
         private void HandleValidationException(ExceptionContext context)
         {
-            var exception = context.Exception as ValidationException;
+            if (context.Exception is not ValidationException exception) return;
 
             var details = new ValidationProblemDetails(exception.Errors)
             {
@@ -76,7 +79,7 @@ namespace TenderManagement.WebApi.Filters
 
         private void HandleNotFoundException(ExceptionContext context)
         {
-            var exception = context.Exception as NotFoundException;
+            if (context.Exception is not NotFoundException exception) return;
 
             var details = new ProblemDetails()
             {
@@ -137,6 +140,7 @@ namespace TenderManagement.WebApi.Filters
             {
                 StatusCode = StatusCodes.Status500InternalServerError
             };
+            _logger.LogError(context.Exception, "Unknown error occurs");
 
             context.ExceptionHandled = true;
         }

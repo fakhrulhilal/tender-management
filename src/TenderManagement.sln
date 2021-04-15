@@ -28,6 +28,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Databa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{00828961-1066-4D5F-8E88-1686267A923C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{EB4E09AB-E399-40D8-A1FB-E744F57AF6A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiClient", "ApiClient", "{528623F4-679C-41A0-BC02-42FC386C48EF}"
+	ProjectSection(SolutionItems) = preProject
+		..\tools\ApiClient\Get-ApiClientToken.ps1 = ..\tools\ApiClient\Get-ApiClientToken.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +80,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{DEFF4009-1FAB-4392-80B6-707E2DC5C00B} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
 		{277029AF-D9E1-4B75-9F11-48FEA7345AD7} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
+		{528623F4-679C-41A0-BC02-42FC386C48EF} = {EB4E09AB-E399-40D8-A1FB-E744F57AF6A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3CB609D9-5D54-4C11-A371-DAAC8B74E430}
