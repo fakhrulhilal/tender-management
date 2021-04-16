@@ -27,7 +27,7 @@ services:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     healthcheck:
-      test: curl -s http://localhost:9200 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
+      test: curl -s -f http://localhost:9200/_cluster/health || exit 1
       interval: 30s
       timeout: 10s
       retries: 5
@@ -42,18 +42,29 @@ services:
     image: docker.elastic.co/kibana/kibana:7.12.0
     container_name: kibana
     depends_on:
-    - elasticsearch
+    - search
     ports:
     - 5601:5601
+    restart: on-failure
     environment:
       ELASTICSEARCH_URL: http://elasticsearch:9200
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    healthcheck:
+      test: curl -s -f http://localhost:5601 >/dev/null
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   cache:
     image: "redis"
     container_name: "rediscache"
     expose:
     - 6379
+    healthcheck:
+      test: if ping="$$(redis-cli -h localhost ping)" && [ "$$ping" = 'PONG' ]; then exit 0; else exit 1; fi
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   webapi:
     build: "."

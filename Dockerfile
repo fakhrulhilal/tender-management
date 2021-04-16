@@ -40,6 +40,7 @@ WORKDIR /src/WebApi
 RUN dotnet publish "WebApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
+RUN apt-get update && apt-get install curl -y
 WORKDIR /app
 COPY --from=publish /app/publish web
 COPY --from=db /app/db migration
