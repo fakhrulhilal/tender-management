@@ -1,5 +1,7 @@
 # Tender Management
 
+[![Build status](https://dev.azure.com/fakhrulhilal/OpenSource/_apis/build/status/TenderManagement.CI?branchName=update-extended)](https://dev.azure.com/fakhrulhilal/OpenSource/_build/latest?definitionId=16)
+
 NOTE! 
 All of this example command below assuming we use powershell as shell.
 

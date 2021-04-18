@@ -1,0 +1,88 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - main
+    - update
+    - update-extended
+
+variables:
+- name: buildConfiguration
+  value: release
+- group: Database.Testing
+
+pool:
+  name: OnPremise
+  demands: dotnet
+  timeoutInMinutes: 15
+
+name: $(Build.DefinitionName) v$(Date:yyyyMMdd)$(Rev:.r)
+jobs:
+
+- job: Build
+
+  steps:
+  - checkout: self
+    clean: true
+    submodules: true
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore packages'
+    inputs:
+      command: restore
+      projects: '$(Build.SourcesDirectory)\src\*.sln'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build solution'
+    inputs:
+      projects: '$(Build.SourcesDirectory)\src\*.sln'
+      arguments: -c $(buildConfiguration)
+
+- job: Test
+  dependsOn: Build
+
+  steps:
+  - checkout: none
+  - task: DotNetCoreCLI@2
+    displayName: 'Run unit test'
+    inputs:
+      command: test
+      projects: '$(Build.SourcesDirectory)\tests\Application.UnitTests\*.csproj'
+      arguments: '--collect "Code coverage"'
+      testRunTitle: 'Unit tests'
+
+  - task: sergeyzwezdin.magic-chunks.magic.chunks.MagicChunks@2
+    displayName: 'Transform for integration tests'
+    inputs:
+      sourcePath: '$(Build.SourcesDirectory)\tests\Application.IntegrationTests\appsettings.json'
+      fileType: Json
+      transformations: |
+       {
+         "ConnectionStrings/DefaultConnection": "Server=$(DB.Server);Database=$(DB.Name);User ID=$(DB.Username);Password=$(DB.Password);MultipleActiveResultSets=true;"
+       }
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run integration test'
+    inputs:
+      command: test
+      projects: '$(Build.SourcesDirectory)\tests\Application.IntegrationTests\*.csproj'
+      arguments: '--collect "Code coverage"'
+      testRunTitle: 'Integration tests'
+
+- job: Publish
+  dependsOn:
+    - Build
+    - Test
+
+  steps:
+  - checkout: none
+  - task: DotNetCoreCLI@2
+    displayName: 'Build package'
+    inputs:
+      command: publish
+      arguments: '-o "$(Build.ArtifactStagingDirectory)" -c $(buildConfiguration)' 
+      workingDirectory: '$(Build.SourcesDirectory)/src/WebApi'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: WebApiPackage'
+    inputs:
+      ArtifactName: WebApiPackage
