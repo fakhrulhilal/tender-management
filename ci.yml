@@ -67,6 +67,11 @@ jobs:
       projects: '$(Build.SourcesDirectory)\tests\Application.IntegrationTests\*.csproj'
       arguments: '--collect:"XPlat Code Coverage"'
       testRunTitle: 'Integration tests'
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: '**/*coverage.cobertura.xml'
+      pathToSources: '$(Build.SourcesDirectory)/src'
 
 - job: Publish
   dependsOn:
