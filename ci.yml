@@ -46,11 +46,12 @@ jobs:
     displayName: 'Run unit test'
     inputs:
       command: test
+      publishTestResults: true
       projects: '$(Build.SourcesDirectory)\tests\Application.UnitTests\*.csproj'
       arguments: '--collect:"XPlat Code Coverage"'
       testRunTitle: 'Unit tests'
 
-  - task: sergeyzwezdin.magic-chunks.magic.chunks.MagicChunks@2
+  - task: MagicChunks@2
     displayName: 'Transform for integration tests'
     inputs:
       sourcePath: '$(Build.SourcesDirectory)\tests\Application.IntegrationTests\appsettings.json'
@@ -64,13 +65,14 @@ jobs:
     displayName: 'Run integration test'
     inputs:
       command: test
+      publishTestResults: true
       projects: '$(Build.SourcesDirectory)\tests\Application.IntegrationTests\*.csproj'
       arguments: '--collect:"XPlat Code Coverage"'
       testRunTitle: 'Integration tests'
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '**/*coverage.cobertura.xml'
+      summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
       pathToSources: '$(Build.SourcesDirectory)/src'
 
 - job: Publish
