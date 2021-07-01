@@ -16,7 +16,7 @@ pool:
   demands: dotnet
   timeoutInMinutes: 15
 
-name: $(Build.DefinitionName) v$(Date:yyyyMMdd)$(Rev:.r)
+name: v$(Date:yyyyMMdd)$(Rev:.r)
 jobs:
 
 - job: Build
@@ -47,7 +47,7 @@ jobs:
     inputs:
       command: test
       projects: '$(Build.SourcesDirectory)\tests\Application.UnitTests\*.csproj'
-      arguments: '--collect "Code coverage"'
+      arguments: '--collect:"XPlat Code Coverage"'
       testRunTitle: 'Unit tests'
 
   - task: sergeyzwezdin.magic-chunks.magic.chunks.MagicChunks@2
@@ -65,7 +65,7 @@ jobs:
     inputs:
       command: test
       projects: '$(Build.SourcesDirectory)\tests\Application.IntegrationTests\*.csproj'
-      arguments: '--collect "Code coverage"'
+      arguments: '--collect:"XPlat Code Coverage"'
       testRunTitle: 'Integration tests'
 
 - job: Publish
