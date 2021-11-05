@@ -18,7 +18,7 @@ All of this example command below assuming we use powershell as shell.
 By default, the database will be migrated automatically when Web API started at first time. To build the database manually:
 1. Install yuniql as [dotnet tool](https://yuniql.io/docs/install-yuniql/#install-with-net-core-global-tool)
 2. Get SQL server using docker, adjust the SA password accordingly
-   `docker run -d -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=P@ssw0rd" -p 1433:1433 --name sqlsrv -v sqlvolume:/var/opt/mssql mcr.microsoft.com/mssql/server:2019-latest`
+   `docker run -d -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=P@ssw0rd" -p 1433:1433 --name sqlsrv -v sqlvolume:/var/opt/mssql mcr.microsoft.com/mssql/server:2019-latest`. See the full references [here](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables).
 3. Set connection string for yuniql to environment variable named _YUNIQL_CONNECTION_STRING_ and build the database
    ```ps
    $Env:YUNIQL_CONNECTION_STRING = 'Server=(local);Database=TenderManagement;User Id=sa;Password=P@ssw0rd'
